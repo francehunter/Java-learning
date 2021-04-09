@@ -17,6 +17,11 @@ public class User
 		this.SID = SID;
 	}
 	
+	public static User CreateDefault()
+	{
+		return new User("192.168.20.18", 15288, "div","1708", "xe");
+	}
+	
     @Override
     public String toString()    
     {

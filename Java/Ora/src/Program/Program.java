@@ -10,12 +10,14 @@ public class Program
 	 
     public static void main(String Args[]) throws Exception 
     {
-    	Program.Test();
+    	//Program.Test();
+    	var dls = new DeadlockSandbox();
+    	dls.Lock();
     }
     
     public static void Test() throws SQLException, ClassNotFoundException
     {
-    	var user = new User("192.168.20.18", 15288, "div","1708", "xe");
+    	var user = User.CreateDefault();
     	var dbo = Dbo.GetInstance(user);
     	
     	var rs = dbo.Query("SELECT * FROM DIV.TABLE1");    	
