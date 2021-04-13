@@ -5,9 +5,18 @@ import Servlet.RequestData;
 import Servlet.RequestHandler;
 import com.google.gson.Gson;
 
+import Api.Serializator.SerializeType;
+
 public abstract class ApiMethod implements RequestHandler
 {
-
+	
+	private Serializator serializator = null;
+	
+	public ApiMethod(SerializeType serializeType)
+	{
+		serializator = new Serializator(serializeType);
+	}
+	
 	@Override
 	public String GetPath() 
 	{
@@ -18,33 +27,11 @@ public abstract class ApiMethod implements RequestHandler
 	@Override
 	public RequestAnswer Process(RequestData rd)
 	{
-		Gson gson = new Gson();
 		Object ans = GetAnswer(rd);
-		String json = gson.toJson(ans);
-		
-		RequestAnswer ra = new RequestAnswer(json);
+		String text = serializator.ToString(ans);		
+		RequestAnswer ra = new RequestAnswer(text);
 		return ra;
 	}
 	
-	protected abstract Object GetAnswer(RequestData rd);
-
-	protected enum MetaStatus
-	{
-		OK,
-		ERROR
-	}	
-	
-	protected class MetaAnswer
-	{
-		/* документация из мифического сваггера */
-		
-		// ['OK' or 'ERROR']: Результат операции
-		public MetaStatus status;
-		// code (integer): Код ошибки 
-		public int code = 0;
-		// message (string, optional): Дополнительное сообщение
-		public String message = "";		
-	}
-	
-	
+	protected abstract Object GetAnswer(RequestData rd);	
 }
